@@ -13,12 +13,36 @@
         p.my-auto.opacity-50 已完成
       div.text-outer
         b-form-input(v-model='text' placeholder='新增待辦事項' maxlength="20")
-        b-button.submit(pill)
+        b-button.submit(pill )
           b-icon-plus.plus
   div#sidebar-analysis
     b-sidebar#sidebar-2(shadow width='50%' v-model='visible2')
-      .px-3.py-2
-        p Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+      .text-color.d-flex.align-items-center.justify-content-center.flex-column.list-outer
+        h1.mr-auto.text-center.my-auto 專注度分析
+        .doneNumber.d-flex.justify-content-between.mt-5
+          .today
+            h6 今日
+            .box.d-flex.align-items-center
+              .box-child
+                h1.number 9
+                h6.description 待辦事項
+              .line
+              .box-child
+                h1.number.finishedNumber 7
+                h6.description 已完成
+          .thisWeek
+            h6 本週
+            .box.d-flex.align-items-center
+              .box-child
+                h1.number 54
+                h6.description 待辦事項
+              .line
+              .box-child
+                h1.number.finishedNumber 48
+                h6.description 已完成
+
+        .calendar
+        .chart
   b-row#row-content.position-relative(:style='{marginLeft: whilefold}')
     b-col.vh-50.d-flex.align-items-center.justify-content-center.flex-column(cols='6')
       h1.time 25:00
@@ -30,6 +54,7 @@
         b-button.delete.time-btn
           img(src='./assets/icon/icon-cancel.svg')
     b-col.vh-50(cols='6') 22
+
     b-col.vh-50.bgtomato.d-flex.justify-content-center.align-items-end(cols='12')
       img(src='./assets/icon/tomato--orange.svg' :style='{marginRight: moveToRight}')
 </template>
