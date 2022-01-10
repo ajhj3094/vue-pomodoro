@@ -12,9 +12,11 @@
         p.my-auto.mr-5 未完成
         p.my-auto.opacity-50 已完成
       div.text-outer
-        b-form-input(v-model='text' placeholder='新增待辦事項' maxlength="20")
-        b-button.submit(pill )
+        b-form-input(v-model='newinput' placeholder='新增待辦事項' maxlength="20" @keydown.enter='additem')
+        b-button.submit(pill @click='additem')
           b-icon-plus.plus
+      div(v-for='(item, i) in items')
+        p {{ item }}
   div#sidebar-analysis
     b-sidebar#sidebar-2(shadow width='50%' v-model='visible2')
       .text-color.d-flex.align-items-center.justify-content-center.flex-column.list-outer
@@ -70,7 +72,9 @@ export default {
       visible1: false,
       visible2: false,
       whilefold: '',
-      moveToRight: ''
+      moveToRight: '',
+      newinput: '',
+      items: []
     }
   },
   methods: {
@@ -117,6 +121,10 @@ export default {
         this.whilefold = ''
         this.moveToRight = ''
       }
+    },
+    additem () {
+      this.items.push(this.newinput)
+      this.newinput = ''
     }
   },
   computed: {
