@@ -11,12 +11,20 @@
         h1.mr-auto.text-center.my-auto 待辦清單
         p.my-auto.mr-5 未完成
         p.my-auto.opacity-50 已完成
-      div.text-outer
+      div.text-outer.mb-5
         b-form-input(v-model='newinput' placeholder='新增待辦事項' maxlength="20" @keydown.enter='additem')
         b-button.submit(pill @click='additem')
           b-icon-plus.plus
       div(v-for='(item, i) in items')
-        p {{ item }}
+        div.h-line
+        div.w-100.row.py-3.mx-0
+          div.circle
+          p.mr-auto.text-e8.ml-3 {{ item }}
+          div.mx-1.btns-outer
+            img(src="./assets/icon/icon-edit.svg")
+          div.mx-1.btns-outer
+            img(src="./assets/icon/icon-delete.svg")
+            | {{ itemslength }}
   div#sidebar-analysis
     b-sidebar#sidebar-2(shadow width='50%' v-model='visible2')
       .text-color.d-flex.align-items-center.justify-content-center.flex-column.list-outer
@@ -74,7 +82,8 @@ export default {
       whilefold: '',
       moveToRight: '',
       newinput: '',
-      items: []
+      items: [],
+      itemslength: 0
     }
   },
   methods: {
