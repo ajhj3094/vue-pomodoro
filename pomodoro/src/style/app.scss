@@ -219,12 +219,17 @@ body {
   transition: all 200ms ease-out;
   margin-top: -1px;
   &:hover {
-    background: #5c8051
+    background: #5c8051;
   }
 }
 
 .text-e8 {
   color: #e8e8e8;
+}
+
+.text-e8_opacity {
+  color: #e8e8e8;
+  opacity: 0.5;
 }
 
 .btns-outer {
@@ -238,6 +243,44 @@ body {
   margin-top: -5px;
   cursor: pointer;
   &:hover {
-    background: #5c8051
+    background: #5c8051;
   }
+}
+
+.list-row {
+  height: 75px;
+}
+
+.editinput {
+  margin-top: -6px;
+  height: 35px;
+  color: #1e2124;
+  &:focus {
+    font-family: "Fjalla One", sans-serif;
+    color: #1e2124;
+    background-color: #fff;
+    border-color: #5c8051;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgb(92, 128, 81);
+  }
+}
+
+.check2 {
+  font-size: 20px;
+}
+
+.circle-com {
+  color: #e8e8e8;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  svg {
+    width: 16px;
+    height: 16px;
+    margin-right: 1px;
+  }
+}
+.todotab,
+.finishedtab {
+  transition: all 250ms ease-out; 
 }
