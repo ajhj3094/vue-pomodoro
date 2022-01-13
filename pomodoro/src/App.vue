@@ -89,6 +89,7 @@
 <script>
 const time = parseInt(process.env.VUE_APP_TIME)
 const timebreak = parseInt(process.env.VUE_APP_TIMEBREAK)
+
 export default {
   data () {
     return {
@@ -101,7 +102,7 @@ export default {
       whilefold: '',
       moveToRight: '',
       newinput: '',
-      items: [],
+      // items: [],
       itemslength: 0,
       editstatus: false,
       edited: '',
@@ -112,7 +113,7 @@ export default {
       active2: '1rem',
       opacity1: '1',
       opacity2: '0.5',
-      timeleft: time,
+      // timeleft: time,
       breaker: false,
       takeabreak: 'block',
       // timer status
@@ -223,7 +224,7 @@ export default {
       if (this.items.length > 0) {
         this.status = 1
         this.timer = setInterval(() => {
-          this.timeleft--
+          this.$store.commit('countdown')
           if (this.timeleft <= -1) {
             this.finish(false)
           }
@@ -269,9 +270,9 @@ export default {
     }
   },
   computed: {
-    // timeleft () {
-    //   return this.$store.state.timeleft
-    // },
+    timeleft () {
+      return this.$store.state.timeleft
+    },
     timeText () {
       const m = Math.floor(this.timeleft / 60).toString().padStart(2, '0')
       const s = Math.floor(this.timeleft % 60).toString().padStart(2, '0')
