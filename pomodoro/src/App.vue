@@ -35,7 +35,7 @@
         div.list-row(v-for='(item, i) in finishedlist' :style="{display: finishedliststatus }")
           div.h-line
           div.w-100.row.py-3.mx-0
-            div.circle.circle-com(title='清除')
+            div.circle.circle-com(title='清除' @click="deletefinished(i)")
               b-icon-check2
             //- p(v-if="editstatus").mr-auto.text-e8.ml-3
             b-form-input.col-8.mr-auto.text-e8.ml-3.editinput(v-if="item.edit" placeholder='修改待辦事項' maxlength="20" v-model="item.model"  @keydown.enter="submitedit(i)")
@@ -49,7 +49,7 @@
             h6 今日
             .box.d-flex.align-items-center
               .box-child
-                h1.number 9
+                h1.number {{ todo }}
                 h6.description 待辦事項
               .line
               .box-child
@@ -81,15 +81,16 @@
           img(src='./assets/icon/icon-cancel.svg')
         b-button.delete.time-btn(v-else title='跳過' @click="skipbreak")
           img(src='./assets/icon/icon-cancel.svg')
-    b-col.vh-50(cols='6' :style='{display: takeabreak}') 22
+    b-col.vh-50#right-list-section(cols='6' :style='{display: takeabreak}')
+      div.d-flex.list-container.align-items-center(v-for="(item, i) in items")
+        div.circle-outer
+          div.circle
+        h1 {{ item.name }}
     b-col.vh-50.bgtomato.d-flex.justify-content-center.align-items-end(cols='12')
       img(src='./assets/icon/tomato--orange.svg' :style='{marginRight: moveToRight}')
 </template>
 
 <script>
-const time = parseInt(process.env.VUE_APP_TIME)
-const timebreak = parseInt(process.env.VUE_APP_TIMEBREAK)
-
 export default {
   data () {
     return {
@@ -106,7 +107,7 @@ export default {
       itemslength: 0,
       editstatus: false,
       edited: '',
-      finishedlist: [],
+      // finishedlist: [],
       todoliststatus: 'block',
       finishedliststatus: 'none',
       active1: '1.3rem',
@@ -114,14 +115,15 @@ export default {
       opacity1: '1',
       opacity2: '0.5',
       // timeleft: time,
-      breaker: false,
+      // breaker: false,
       takeabreak: 'block',
       // timer status
       // 0 = 停止
       // 1 = 倒數中
       // 2 = 暫停
       status: 0,
-      timer: 0
+      timer: 0,
+      todo: JSON.parse(localStorage.getItem('pomodoro')).finishedlist.length
     }
   },
   methods: {
@@ -173,33 +175,24 @@ export default {
       // this.items.push(this.newinput)
       // this.newinput = ''
       if (this.newinput.length > 0) {
-        this.items.push({
-          name: this.newinput,
-          edit: false,
-          model: this.newinput
-        })
+        this.$store.commit('additem', this.newinput)
         this.newinput = ''
       }
     },
     delitem (index) {
-      this.items.splice(index, 1)
+      this.$store.commit('delitem', index)
     },
     edititem (index) {
-      this.items[index].edit = true
+      this.$store.commit('edititem', index)
     },
     submitedit (index) {
-      if (this.items[index].model.length > 0) {
-        this.items[index].name = this.items[index].model
-        this.items[index].edit = false
-      }
+      this.$store.commit('submitedit', index)
     },
     canceledit (index) {
-      this.items[index].edit = false
-      this.items[index].model = this.items[index].name
+      this.$store.commit('canceledit', index)
     },
     complete (index) {
-      this.finishedlist.push(this.items[index])
-      this.items.splice(index, 1)
+      this.$store.commit('complete', index)
     },
     opentodolist () {
       this.todoliststatus = 'block'
@@ -238,38 +231,45 @@ export default {
     finish (skip) {
       clearInterval(this.timer)
       this.status = 0
-      if (this.items.length > 0) {
-        this.break = !this.break
-      }
-      this.timeleft = this.break ? timebreak : time
-
+      this.$store.commit('finish')
       if (!skip) {
         const audio = new Audio()
         audio.src = require('@/assets/alarm.mp3')
         audio.play()
         audio.volume = 0.1
       }
-
       if (this.items.length > 0) {
         this.start()
-      }
-      if (this.break) {
-        this.items.pop()
       }
     },
     skipbreak () {
       clearInterval(this.timer)
       this.status = 0
-      if (this.items.length > 0) {
-        this.break = !this.break
-      }
-      this.timeleft = time
+      this.$store.commit('skipbreak')
       if (this.items.length > 0) {
         this.start()
       }
+    },
+    deletefinished (index) {
+      this.$store.commit('deletefinished', index)
     }
   },
   computed: {
+    done () {
+      return this.$store.state.done
+    },
+    breaker () {
+      return this.$store.state.breaker
+    },
+    finishedlist () {
+      return this.$store.state.finishedlist
+    },
+    // finishedlist2 () {
+    //   return this.$store.state.finishedlist2
+    // },
+    items () {
+      return this.$store.state.items
+    },
     timeleft () {
       return this.$store.state.timeleft
     },

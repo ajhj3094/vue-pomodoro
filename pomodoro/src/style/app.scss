@@ -173,6 +173,7 @@ body {
   font-family: "Fjalla One", sans-serif;
   font-size: 200px;
   color: #e8e8e8;
+  margin-top: 30px;
 }
 .time-btn {
   background: transparent;
@@ -284,3 +285,41 @@ body {
 .finishedtab {
   transition: all 250ms ease-out; 
 }
+
+#right-list-section {
+  padding-top: 130px;
+  .circle {
+    width: 24px;
+    height: 24px;
+  }
+  h1 {
+    font-size: 1rem;
+    line-height: 40px;
+    height: 100%;
+    margin-bottom: 0;
+  }
+  .list-container {
+    margin-bottom: 24px;
+    // width: 40px;
+    height: 40px;
+  }
+  .list-container:first-child {
+    margin-bottom: 35px;
+    h1 {
+      font-size: 2rem;
+    }
+  }
+  .list-container:first-child .circle {
+    width: 40px;
+    height: 40px;
+    
+  }
+  .circle-outer {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
