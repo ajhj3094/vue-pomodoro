@@ -287,7 +287,7 @@ body {
 }
 
 #right-list-section {
-  padding-top: 130px;
+  padding-top: 115px;
   .circle {
     width: 24px;
     height: 24px;
@@ -303,16 +303,18 @@ body {
     // width: 40px;
     height: 40px;
   }
-  .list-container:first-child {
+  .list-container:last-child {
     margin-bottom: 35px;
     h1 {
       font-size: 2rem;
     }
   }
-  .list-container:first-child .circle {
+  .list-container:last-child .circle {
     width: 40px;
     height: 40px;
-    
+  }
+  .list-container:last-child .circle-outer {
+    margin-right: 15px;
   }
   .circle-outer {
     width: 40px;
@@ -320,6 +322,30 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-right: 8px;
+    & + h1 {
+      color: #e8e8e8;
+    }
   }
 }
+.chart {
+  margin-top: 120px;
+}
+.chart > svg > g text[text-anchor]{
+  fill: #fff !important;
+  font-size: 1rem !important;
+  color: red !important;
+}
+.chart > svg > g text[alignment-baseline]{
+  fill: #fff !important;
+  font-size: 1rem !important;
+}
+.chart rect {
+  fill: #f08448 !important;
+  position: relative;
+}
 
+.small {
+  max-width: 600px;
+  margin:  150px auto;
+}

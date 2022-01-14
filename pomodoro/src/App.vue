@@ -53,20 +53,33 @@
                 h6.description 待辦事項
               .line
               .box-child
-                h1.number.finishedNumber 7
+                h1.number.finishedNumber {{ done }}
                 h6.description 已完成
           .thisWeek
             h6 本週
             .box.d-flex.align-items-center
               .box-child
-                h1.number 54
+                h1.number {{ todo }}
                 h6.description 待辦事項
               .line
               .box-child
-                h1.number.finishedNumber 48
+                h1.number.finishedNumber {{ done }}
                 h6.description 已完成
         .calendar
         .chart
+          bar-chart
+          //- vue-bar-graph(
+          //-   :points="pointsarray"
+          //-   :show-y-axis="true"
+          //-   :show-x-axis="true"
+          //-   :width="500"
+          //-   :height="200"
+          //-   :show-values="false"
+          //-   :use-custom-labels="true"
+          //-   :custom-labels="['1/14', '1/15', '1/16', '1/17', '1/18']"
+          //-   :labels="['', '', '', '', '']"
+          //-   :show-trend-line="false"
+          //- )
   b-row#row-content.position-relative(:style='{marginLeft: whilefold}')
     b-col.vh-50.d-flex.align-items-center.justify-content-center.flex-column(cols='6')
       h1.time {{ timeText }}
@@ -81,17 +94,23 @@
           img(src='./assets/icon/icon-cancel.svg')
         b-button.delete.time-btn(v-else title='跳過' @click="skipbreak")
           img(src='./assets/icon/icon-cancel.svg')
-    b-col.vh-50#right-list-section(cols='6' :style='{display: takeabreak}')
+    b-col.vh-50#right-list-section.d-flex.flex-column-reverse.justify-content-end(cols='6' :style='{display: takeabreak}')
       div.d-flex.list-container.align-items-center(v-for="(item, i) in items")
         div.circle-outer
           div.circle
         h1 {{ item.name }}
+        //- button(@click='weekupdate++') test
     b-col.vh-50.bgtomato.d-flex.justify-content-center.align-items-end(cols='12')
       img(src='./assets/icon/tomato--orange.svg' :style='{marginRight: moveToRight}')
 </template>
 
 <script>
+import BarChart from './components/BarChart.vue'
+
 export default {
+  components: {
+    BarChart
+  },
   data () {
     return {
       status1: false,
@@ -123,9 +142,15 @@ export default {
       // 2 = 暫停
       status: 0,
       timer: 0,
-      todo: JSON.parse(localStorage.getItem('pomodoro')).finishedlist.length
+      pointsarray: [0, 0, 0, 0, this.$store.state.todo]
     }
   },
+  // props: {
+  //   pointsarray: {
+  //     type: Array,
+  //     dafault: [1, 2, 3, 4, 5]
+  //   }
+  // },
   methods: {
     fold1 () {
       this.status1 = !this.status1
@@ -255,6 +280,9 @@ export default {
     }
   },
   computed: {
+    todo () {
+      return this.$store.state.todo
+    },
     done () {
       return this.$store.state.done
     },
@@ -277,6 +305,18 @@ export default {
       const m = Math.floor(this.timeleft / 60).toString().padStart(2, '0')
       const s = Math.floor(this.timeleft % 60).toString().padStart(2, '0')
       return `${m} : ${s}`
+    },
+    itemscopy () {
+      return this.$store.state.itemscopy
+    }
+  },
+  watch: {
+    // items (value, oldValue) {
+    //   console.log(value.length, this.items.length)
+    //   this.$store.commit('items')
+    // },
+    finishedlist (value, oldValue) {
+      this.$store.commit('finishedlist')
     }
   }
 }

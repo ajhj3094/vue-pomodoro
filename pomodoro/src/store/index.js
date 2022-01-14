@@ -16,6 +16,7 @@ export default new Vuex.Store({
     // Sidebar 2
     todo: 0,
     done: 0
+    // itemscopy: [...this.items].length
     // finishedlist2: []
   },
   mutations: {
@@ -25,6 +26,8 @@ export default new Vuex.Store({
         edit: false,
         model: data
       })
+      state.todo++
+      // state.itemscopy++
     },
     delitem (state, data) {
       state.items.splice(data, 1)
@@ -69,6 +72,12 @@ export default new Vuex.Store({
     },
     deletefinished (state, data) {
       state.finishedlist.splice(data, 1)
+    },
+    // items (state) {
+    //   state.todo++
+    // },
+    finishedlist (state) {
+      state.done++
     }
   },
   actions: {
