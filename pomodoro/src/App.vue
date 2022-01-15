@@ -32,14 +32,14 @@
             div.mx-1.btns-outer(v-if="item.edit" title='取消' @click="canceledit(i)")
               b-icon-arrow-counterclockwise.text-e8
       div.d-flex.flex-column-reverse
-        div.list-row(v-for='(item, i) in finishedlist' :style="{display: finishedliststatus }")
+        div.list-row(v-for='(item, i) in this.finishedlist' :style="{display: finishedliststatus }")
           div.h-line
           div.w-100.row.py-3.mx-0
             div.circle.circle-com(title='清除' @click="deletefinished(i)")
               b-icon-check2
             //- p(v-if="editstatus").mr-auto.text-e8.ml-3
             b-form-input.col-8.mr-auto.text-e8.ml-3.editinput(v-if="item.edit" placeholder='修改待辦事項' maxlength="20" v-model="item.model"  @keydown.enter="submitedit(i)")
-            del(v-else).mr-auto.text-e8_opacity.ml-3 {{ item.name }}
+            del(v-if="!item.edit").mr-auto.text-e8_opacity.ml-3 {{ item.name }}
   div#sidebar-analysis
     b-sidebar#sidebar-2(shadow width='50%' v-model='visible2')
       .text-color.d-flex.align-items-center.justify-content-center.flex-column.list-outer
@@ -67,7 +67,7 @@
                 h6.description 已完成
         .calendar
         .chart
-          bar-chart
+          BarChart(style="position:relative; height: 40vh")
           //- vue-bar-graph(
           //-   :points="pointsarray"
           //-   :show-y-axis="true"
@@ -84,15 +84,22 @@
     b-col.vh-50.d-flex.align-items-center.justify-content-center.flex-column(cols='6')
       h1.time {{ timeText }}
       div.mt-3
-        b-button.mute.time-btn
-          img(src='./assets/icon/icon-bell.svg')
-        b-button.playStop.time-btn(v-if="status === 1" title='靜音' @click="pause")
+        b-button.mute.time-btn.position-relative(v-if="mute" title='靜音' @click="muteTurnOn")
+          img(v-if="mute" src='./assets/icon/icon-bell.svg')
+          div.position-absolute.slash(v-if="mute")
+        b-button.time-btn.position-relative(v-else title='靜音' @click="mute=!mute")
+          img(v-if="!mute" src='./assets/icon/icon-bell.svg')
+        b-button.playStop.time-btn(v-if="this.status === 1" @click="pause" title='暫停')
           img( src='./assets/icon/icon-pause--orange.svg')
-        b-button.playStop.time-btn(v-else @click="start")
+        b-button.playStop.time-btn.disabled(v-else-if="this.items.length <= 0" title='沒有事項' disabled)
           img(src='./assets/icon/icon-play--orange.svg')
-        b-button.delete.time-btn(v-if="!breaker" title='跳過' @click="finish(true)")
+        b-button.playStop.time-btn(v-else @click="start" title='點擊開始')
+          img(src='./assets/icon/icon-play--orange.svg')
+        b-button.delete.time-btn(v-if="!this.breaker && this.items.length > 0" title='跳過事項' @click="finish(true)")
           img(src='./assets/icon/icon-cancel.svg')
-        b-button.delete.time-btn(v-else title='跳過' @click="skipbreak")
+        b-button.delete.time-btn(v-if="this.breaker && this.items.length > 0" title='跳過休息' @click="skipbreak")
+          b-icon-arrow-right.skipBreak
+        b-button.delete.time-btn(v-if="!this.breaker && this.items.length <= 0" title='沒有事項' @click="" disabled)
           img(src='./assets/icon/icon-cancel.svg')
     b-col.vh-50#right-list-section.d-flex.flex-column-reverse.justify-content-end(cols='6' :style='{display: takeabreak}')
       div.d-flex.list-container.align-items-center(v-for="(item, i) in items")
@@ -105,7 +112,7 @@
 </template>
 
 <script>
-import BarChart from './components/BarChart.vue'
+import BarChart from '@/components/BarChart.vue'
 
 export default {
   components: {
@@ -122,21 +129,17 @@ export default {
       whilefold: '',
       moveToRight: '',
       newinput: '',
-      // items: [],
       itemslength: 0,
       editstatus: false,
       edited: '',
-      // finishedlist: [],
       todoliststatus: 'block',
       finishedliststatus: 'none',
       active1: '1.3rem',
       active2: '1rem',
       opacity1: '1',
       opacity2: '0.5',
-      // timeleft: time,
-      // breaker: false,
       takeabreak: 'block',
-      // timer status
+      mute: false,
       // 0 = 停止
       // 1 = 倒數中
       // 2 = 暫停
@@ -145,12 +148,6 @@ export default {
       pointsarray: [0, 0, 0, 0, this.$store.state.todo]
     }
   },
-  // props: {
-  //   pointsarray: {
-  //     type: Array,
-  //     dafault: [1, 2, 3, 4, 5]
-  //   }
-  // },
   methods: {
     fold1 () {
       this.status1 = !this.status1
@@ -245,6 +242,9 @@ export default {
           this.$store.commit('countdown')
           if (this.timeleft <= -1) {
             this.finish(false)
+            if (!this.breaker) {
+              this.$store.commit('increasedone')
+            }
           }
         }, 1000)
       }
@@ -261,7 +261,11 @@ export default {
         const audio = new Audio()
         audio.src = require('@/assets/alarm.mp3')
         audio.play()
-        audio.volume = 0.1
+        if (this.mute) {
+          audio.volume = 0
+        } else {
+          audio.volume = 0.1
+        }
       }
       if (this.items.length > 0) {
         this.start()
@@ -277,6 +281,15 @@ export default {
     },
     deletefinished (index) {
       this.$store.commit('deletefinished', index)
+    },
+    muteTurnOn () {
+      this.mute = !this.mute
+      // const audio = new Audio()
+      // if (this.mute) {
+      //   audio.volume = 0
+      // } else {
+      //   audio.volume = 0.1
+      // }
     }
   },
   computed: {
@@ -292,9 +305,6 @@ export default {
     finishedlist () {
       return this.$store.state.finishedlist
     },
-    // finishedlist2 () {
-    //   return this.$store.state.finishedlist2
-    // },
     items () {
       return this.$store.state.items
     },
@@ -305,18 +315,6 @@ export default {
       const m = Math.floor(this.timeleft / 60).toString().padStart(2, '0')
       const s = Math.floor(this.timeleft % 60).toString().padStart(2, '0')
       return `${m} : ${s}`
-    },
-    itemscopy () {
-      return this.$store.state.itemscopy
-    }
-  },
-  watch: {
-    // items (value, oldValue) {
-    //   console.log(value.length, this.items.length)
-    //   this.$store.commit('items')
-    // },
-    finishedlist (value, oldValue) {
-      this.$store.commit('finishedlist')
     }
   }
 }

@@ -35,7 +35,9 @@ body {
     background: white;
   }
 }
-
+.b-sidebar-body {
+  overflow: hidden !important;
+}
 .b-sidebar-header {
   display: none !important;
   height: 80px;
@@ -45,6 +47,7 @@ body {
 }
 .text-outer {
   padding-top: 30px;
+  position: relative;
   .form-control {
     border: none;
     border-radius: 40px;
@@ -63,8 +66,8 @@ body {
     background: #f08448;
     border: none;
     position: absolute;
-    right: 60px;
-    top: 185px;
+    right: 10px;
+    top: 57px;
     padding: 5px 8px;
   }
   .submit:active,
@@ -128,7 +131,7 @@ body {
 }
 
 .number {
-  font-size: 120px;
+  font-size: calc(35px + 4vw);
   height: 75%;
   margin-bottom: 0;
   text-align: center;
@@ -187,6 +190,7 @@ body {
   vertical-align: bottom;
 }
 .mute {
+  background: #e8e8e857;
 }
 .playStop {
   width: 65px;
@@ -201,7 +205,19 @@ body {
   background: #e8e8e8;
   background-color: #e8e8e8 !important;
 }
-.delete {
+
+.disabled {
+  pointer-events: none;
+}
+
+.slash {
+  width: 35px;
+  height: 2px;
+  background: #e8e8e8;
+  border-radius: 10px;
+  transform: rotate(46deg);
+  top: 22px;
+  left: 6px;
 }
 
 .h-line {
@@ -284,6 +300,7 @@ body {
 .todotab,
 .finishedtab {
   transition: all 250ms ease-out; 
+  cursor: pointer;
 }
 
 #right-list-section {
@@ -329,7 +346,8 @@ body {
   }
 }
 .chart {
-  margin-top: 120px;
+  margin-top: 70px;
+  width: 100%;
 }
 .chart > svg > g text[text-anchor]{
   fill: #fff !important;
@@ -348,4 +366,51 @@ body {
 .small {
   max-width: 600px;
   margin:  150px auto;
+}
+
+.skipBreak {
+  font-size: 26px !important;
+}
+
+#bar-chart {
+  // Bug: 開啟和重整會消失，改 .vue 檔的 data 才會出現，這樣可以直接顯示
+  width: 100% !important;
+  height: 100% !important;
+}
+
+@media (max-width: 1200px) {
+  .time {
+    font-size: calc(35px + 10vw);
+  }
+  .list-outer > h1 {
+    font-size: calc(0.5rem + 2vw);
+  }
+  .list-outer>p:nth-child(2) {
+    margin-right: 2rem !important;
+  }
+  .box-child>.number {
+    font-size: calc(1rem + 4vw);
+  }
+  .box {
+    height: calc(60px + 10vw);
+  }
+  .today {
+    margin-right: 10px;
+  }
+  .box-child > .description {
+    font-size: calc(5px + 1vw);
+  }
+  .number {
+    height: 65%;
+  }
+  #bar-chart {
+    // height:
+  }
+}
+
+@media (max-width: 768px) {
+  #sidebar-1,
+  #sidebar-2 {
+    width: 100% !important;
+  }
 }
