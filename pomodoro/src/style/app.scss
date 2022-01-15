@@ -268,6 +268,17 @@ body {
   height: 75px;
 }
 
+.list-row p > span {
+  color: #f08448;
+  margin-left: 10px;
+  font-family: "Noto Sans TC", sans-serif;
+  font-weight: 400;
+}
+
+.list-row:not(:last-child) p > span {
+  display: none;
+}
+
 .editinput {
   margin-top: -6px;
   height: 35px;
@@ -321,7 +332,7 @@ body {
     height: 40px;
   }
   .list-container:last-child {
-    margin-bottom: 35px;
+    margin-bottom: 50px;
     h1 {
       font-size: 2rem;
     }
@@ -376,6 +387,26 @@ body {
   // Bug: 開啟和重整會消失，改 .vue 檔的 data 才會出現，這樣可以直接顯示
   width: 100% !important;
   height: 100% !important;
+}
+.list-container:last-child >.sm-circles-container {
+  width: 60px;
+  bottom: -13px;
+  left: 55px;
+}
+
+.list-container:not(:last-child) >.sm-circles-container {
+  display: none !important;
+}
+
+.sm-circles {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #DFE2B6;
+}
+
+.opacity-20 {
+  opacity: 0.2;
 }
 
 @media (max-width: 1200px) {

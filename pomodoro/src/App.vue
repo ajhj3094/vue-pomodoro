@@ -22,7 +22,9 @@
             div.circle(title='完成' @click="complete(i)")
             //- p(v-if="editstatus").mr-auto.text-e8.ml-3
             b-form-input.col-8.mr-auto.text-e8.ml-3.editinput(v-if="item.edit" placeholder='修改待辦事項' maxlength="20" v-model="item.model"  @keydown.enter="submitedit(i)")
-            p(v-else).mr-auto.text-e8.ml-3 {{ item.name }}
+            p(v-else-if="!item.edit && !breaker").mr-auto.text-e8.ml-3 {{ item.name }}
+              span {{ doingText }}
+            p(v-else-if="!item.edit && breaker").mr-auto.text-e8.ml-3 {{ item.name }}
             div.mx-1.btns-outer(v-if="!item.edit" title='修改' @click="edititem(i)")
               img(src="./assets/icon/icon-edit.svg")
             div.mx-1.btns-outer(v-if="!item.edit" title='刪除' @click="delitem(i)")
@@ -90,11 +92,14 @@
         b-button.time-btn.position-relative(v-else title='靜音' @click="mute=!mute")
           img(v-if="!mute" src='./assets/icon/icon-bell.svg')
         b-button.playStop.time-btn(v-if="this.status === 1" @click="pause" title='暫停')
-          img( src='./assets/icon/icon-pause--orange.svg')
+          img(v-if="!breaker" src='./assets/icon/icon-pause--orange.svg')
+          img(v-else src='./assets/icon/icon-pause--green.svg')
         b-button.playStop.time-btn.disabled(v-else-if="this.items.length <= 0" title='沒有事項' disabled)
-          img(src='./assets/icon/icon-play--orange.svg')
+          img(v-if="!breaker" src='./assets/icon/icon-play--orange.svg')
+          img(v-else src='./assets/icon/icon-play--green.svg')
         b-button.playStop.time-btn(v-else @click="start" title='點擊開始')
-          img(src='./assets/icon/icon-play--orange.svg')
+          img(v-if="!breaker" src='./assets/icon/icon-play--orange.svg')
+          img(v-else src='./assets/icon/icon-play--green.svg')
         b-button.delete.time-btn(v-if="!this.breaker && this.items.length > 0" title='跳過事項' @click="finish(true)")
           img(src='./assets/icon/icon-cancel.svg')
         b-button.delete.time-btn(v-if="this.breaker && this.items.length > 0" title='跳過休息' @click="skipbreak")
@@ -102,13 +107,19 @@
         b-button.delete.time-btn(v-if="!this.breaker && this.items.length <= 0" title='沒有事項' @click="" disabled)
           img(src='./assets/icon/icon-cancel.svg')
     b-col.vh-50#right-list-section.d-flex.flex-column-reverse.justify-content-end(cols='6' :style='{display: takeabreak}')
-      div.d-flex.list-container.align-items-center(v-for="(item, i) in items")
+      div.d-flex.list-container.align-items-center.position-relative(v-for="(item, i) in items")
         div.circle-outer
           div.circle
         h1 {{ item.name }}
+        div.position-absolute.d-flex.sm-circles-container.justify-content-between
+          div.sm-circles
+          div.sm-circles
+          div.sm-circles
+          div.sm-circles.opacity-20
         //- button(@click='weekupdate++') test
     b-col.vh-50.bgtomato.d-flex.justify-content-center.align-items-end(cols='12')
-      img(src='./assets/icon/tomato--orange.svg' :style='{marginRight: moveToRight}')
+      img(v-if="!breaker" src='./assets/icon/tomato--orange.svg' :style='{marginRight: moveToRight}')
+      img(v-else src='./assets/icon/tomato--green.svg' :style='{marginRight: moveToRight}')
 </template>
 
 <script>
@@ -145,7 +156,8 @@ export default {
       // 2 = 暫停
       status: 0,
       timer: 0,
-      pointsarray: [0, 0, 0, 0, this.$store.state.todo]
+      pointsarray: [0, 0, 0, 0, this.$store.state.todo],
+      doingText: '( 進行中 )'
     }
   },
   methods: {
