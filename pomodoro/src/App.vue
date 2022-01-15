@@ -22,9 +22,9 @@
             div.circle(title='完成' @click="complete(i)")
             //- p(v-if="editstatus").mr-auto.text-e8.ml-3
             b-form-input.col-8.mr-auto.text-e8.ml-3.editinput(v-if="item.edit" placeholder='修改待辦事項' maxlength="20" v-model="item.model"  @keydown.enter="submitedit(i)")
-            p(v-else-if="!item.edit && !breaker").mr-auto.text-e8.ml-3 {{ item.name }}
+            p(v-else-if="!item.edit && !breaker").mr-auto.text-e8.ml-3.fw-400.lp {{ item.name }}
               span {{ doingText }}
-            p(v-else-if="!item.edit && breaker").mr-auto.text-e8.ml-3 {{ item.name }}
+            p(v-else-if="!item.edit && breaker").mr-auto.text-e8.ml-3.fw-400.lp {{ item.name }}
             div.mx-1.btns-outer(v-if="!item.edit" title='修改' @click="edititem(i)")
               img(src="./assets/icon/icon-edit.svg")
             div.mx-1.btns-outer(v-if="!item.edit" title='刪除' @click="delitem(i)")
@@ -83,7 +83,7 @@
           //-   :show-trend-line="false"
           //- )
   b-row#row-content.position-relative(:style='{marginLeft: whilefold}')
-    b-col.vh-50.d-flex.align-items-center.justify-content-center.flex-column(cols='6')
+    b-col#left-list-section.vh-50.d-flex.align-items-center.justify-content-center.flex-column.col-12.col-md-6
       h1.time {{ timeText }}
       div.mt-3
         b-button.mute.time-btn.position-relative(v-if="mute" title='靜音' @click="muteTurnOn")
@@ -106,7 +106,7 @@
           b-icon-arrow-right.skipBreak
         b-button.delete.time-btn(v-if="!this.breaker && this.items.length <= 0" title='沒有事項' @click="" disabled)
           img(src='./assets/icon/icon-cancel.svg')
-    b-col.vh-50#right-list-section.d-flex.flex-column-reverse.justify-content-end(cols='6' :style='{display: takeabreak}')
+    b-col#right-list-section.vh-50.d-flex.flex-column-reverse.justify-content-end.col-12.col-md-6(:style='{display: takeabreak}')
       div.d-flex.list-container.align-items-center.position-relative(v-for="(item, i) in items")
         div.circle-outer
           div.circle
@@ -117,7 +117,7 @@
           div.sm-circles
           div.sm-circles.opacity-20
         //- button(@click='weekupdate++') test
-    b-col.vh-50.bgtomato.d-flex.justify-content-center.align-items-end(cols='12')
+    b-col.vh-50.bgtomato.d-flex.justify-content-center.align-items-end.col-12
       img(v-if="!breaker" src='./assets/icon/tomato--orange.svg' :style='{marginRight: moveToRight}')
       img(v-else src='./assets/icon/tomato--green.svg' :style='{marginRight: moveToRight}')
 </template>

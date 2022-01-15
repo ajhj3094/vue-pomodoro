@@ -1,12 +1,18 @@
 @import url("https://fonts.googleapis.com/css2?family=Fjalla+One&family=Noto+Sans+TC:wght@100;300;400;500;700;900&family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap");
 body {
   font-family: "Noto Sans TC", sans-serif;
-  font-family: "Fjalla One", sans-serif;
+  // font-family: "Fjalla One", sans-serif;
 }
 #app {
   height: 100vh;
   background: #304030;
   overflow: hidden;
+}
+.fw-400 {
+  font-weight: 400;
+}
+.lp {
+  letter-spacing: 0.025em;
 }
 
 #left-navbar {
@@ -137,6 +143,7 @@ body {
   text-align: center;
   padding-top: 15px;
   color: #6c9460;
+  font-family: "Fjalla One", sans-serif;
 }
 .finishedNumber {
   color: #f08448;
@@ -265,7 +272,7 @@ body {
 }
 
 .list-row {
-  height: 75px;
+  // height: 75px;
 }
 
 .list-row p > span {
@@ -329,7 +336,7 @@ body {
   .list-container {
     margin-bottom: 24px;
     // width: 40px;
-    height: 40px;
+    // height: 40px;
   }
   .list-container:last-child {
     margin-bottom: 50px;
@@ -353,6 +360,7 @@ body {
     margin-right: 8px;
     & + h1 {
       color: #e8e8e8;
+      letter-spacing: 0.025em;
     }
   }
 }
@@ -443,5 +451,27 @@ body {
   #sidebar-1,
   #sidebar-2 {
     width: 100% !important;
+    padding-left: 50px;
+  }
+  #left-navbar .btns,
+  #left-navbar {
+    width: 50px;
+  }
+  #row-content {
+    margin-left: 50px;
+    width: calc(100vw - 50px);
+  }
+  #left-list-section {
+    // padding-left: 0;
+    height: calc(100vh / 3);
+  }
+  #right-list-section {
+    padding: 18px 35px 0px;
+    height: calc(100vh / 3);
+  }
+  .bgtomato {
+    padding-left: 0;
+    padding-right: 0;
+    height: calc(100vh / 3);
   }
 }
