@@ -163,7 +163,7 @@ body {
 
 #row-content {
   margin-left: 80px;
-  width: 100vw;
+  width: calc(100vw - 80px);
   transition: all 300ms ease-in-out 0s;
 }
 .vh-50 {
@@ -321,8 +321,13 @@ body {
   cursor: pointer;
 }
 
+#left-list-section {
+  z-index: 2;
+}
+
 #right-list-section {
   padding-top: 115px;
+  z-index: 1;
   .circle {
     width: 24px;
     height: 24px;
@@ -442,8 +447,8 @@ body {
   .number {
     height: 65%;
   }
-  #bar-chart {
-    // height:
+  .bgtomato img {
+    width: 100%;
   }
 }
 
@@ -462,11 +467,10 @@ body {
     width: calc(100vw - 50px);
   }
   #left-list-section {
-    // padding-left: 0;
     height: calc(100vh / 3);
   }
   #right-list-section {
-    padding: 18px 35px 0px;
+    padding: 18px 50px 0px;
     height: calc(100vh / 3);
   }
   .bgtomato {

@@ -176,7 +176,7 @@ export default {
         this.visible2 = false
       }
       if (!this.visible1) {
-        this.whilefold = '50%'
+        this.whilefold = 'calc(50vw + 25px)'
         this.moveToRight = '110px'
       } else {
         this.whilefold = ''
@@ -198,7 +198,7 @@ export default {
         this.visible1 = false
       }
       if (!this.visible2) {
-        this.whilefold = '50%'
+        this.whilefold = 'calc(50vw + 25px)'
         this.moveToRight = '110px'
       } else {
         this.whilefold = ''
